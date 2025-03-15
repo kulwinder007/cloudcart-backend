@@ -9,7 +9,7 @@ on:
       - main  # Trigger on PR to the main branch
 
 env:
-  AWS_REGION: us-east-1  # Set the AWS Region for your ECR repository
+  AWS_REGION: us-east-2  # Set the AWS Region for your ECR repository
   ECR_REPO: cloudcart-backend  # Specify the ECR repository name (use frontend or backend as needed)
   IMAGE_TAG: latest  # Specify the tag for the Docker image
 
@@ -34,16 +34,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      # Set up Docker
-      - name: Install Docker with Updated containerd
-        run: |
-          sudo apt-get update -y
-          # Ensure containerd is updated to the latest version
-          sudo apt-get install -y containerd
-          sudo apt-get install -y docker.io
-          sudo systemctl start docker
-          sudo systemctl enable docker
-
       # Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -51,14 +41,13 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-          #role-to-assume: arn:aws:iam::688567283850:role/GitHub-Actions-ECR-Role
-      
+
       # Log in to Amazon ECR
       - name: Log in to Amazon ECR
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.$AWS_REGION.amazonaws.com
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com
 
       # Build and push Docker image for Frontend or Backend
       - name: Build and Push Docker Image
         run: |
-          docker buildx build --push --tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG .
+          docker buildx build --push --tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/$ECR_REPO:$IMAGE_TAG .
