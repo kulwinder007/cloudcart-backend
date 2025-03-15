@@ -12,7 +12,7 @@ env:
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: amazon-linux-2
     environment: AWS-ECR
     steps:
       - name: Checkout Code
