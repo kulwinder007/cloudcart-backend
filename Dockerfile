@@ -13,8 +13,8 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Expose the backend port
-EXPOSE 3000
+# Expose the backend 8080 port
+EXPOSE 8080
 
 # Set environment variables for DB connection (optional, if not hardcoded)
 # ENV DB_HOST=mongodb://db:27017
