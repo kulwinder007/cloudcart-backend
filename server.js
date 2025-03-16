@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 });
 
 //PORT Config
-//const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8081;
 
 //run listen
 app.listen(8081, '0.0.0.0', () => {
