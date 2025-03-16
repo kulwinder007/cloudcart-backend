@@ -10,13 +10,17 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+
+# Install PM2 globally
+RUN npm install -g pm2
+
 # Copy the rest of the application
 COPY . .
 
 # Expose the backend 8080 port
 EXPOSE 8080
 
-# Set environment variables for DB connection (optional, if not hardcoded)
+#Set environment variables for DB connection (optional, if not hardcoded)
 # ENV DB_HOST=mongodb://db:27017
 # ENV DB_USER=user
 # ENV DB_PASS=pass
