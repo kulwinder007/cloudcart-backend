@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
   res.send("<h1>Welcome to ecommerce app</h1>");
 });
 
-//PORT Configura
+//PORT Configuration
 const PORT = process.env.PORT || 8080;
 
 //run listen
