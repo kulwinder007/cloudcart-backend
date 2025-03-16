@@ -17,6 +17,11 @@ RUN npm install -g pm2
 # Copy the rest of the application
 COPY . .
 
+# Install the app using PM2 and ensure it's saved for startup
+RUN pm2 start server.js && \
+    pm2 save --force && \
+    pm2 startup
+
 # Expose the backend 8080 port
 EXPOSE 8080
 
@@ -25,5 +30,5 @@ EXPOSE 8080
 # ENV DB_USER=user
 # ENV DB_PASS=pass
 
-# Start the Node.js server
-CMD ["npm", "start"]
+# Start PM2 and npm in the final command
+CMD ["sh", "-c", "pm2 start server.js && pm2 logs && npm start"]
